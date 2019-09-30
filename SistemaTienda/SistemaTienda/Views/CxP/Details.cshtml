@@ -1,0 +1,42 @@
+﻿@model SistemaTienda.Models.tblCxP
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>tblCxP</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.tblCompra.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblCompra.Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fecha_limite)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fecha_limite)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.abonado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.abonado)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

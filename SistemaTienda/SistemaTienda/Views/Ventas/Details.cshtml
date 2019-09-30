@@ -1,0 +1,74 @@
+﻿@model SistemaTienda.Models.tblVenta
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>tblVenta</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.tblCliente.nombre_compañia)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblCliente.nombre_compañia)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblEmpleado.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblEmpleado.nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMetodoPago.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMetodoPago.nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblProducto.nombre_producto)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblProducto.nombre_producto)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fecha)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fecha)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cantidad_venta)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cantidad_venta)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.precio_final)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.precio_final)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
