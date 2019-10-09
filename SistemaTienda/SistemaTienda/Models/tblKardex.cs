@@ -20,6 +20,12 @@ namespace SistemaTienda.Models
         [Column(TypeName = "date")]
         public DateTime? fecha { get; set; }
 
+        public int? cantidad_inicial { get; set; }
+
+        public int? id_devolucion { get; set; }
+
+        public virtual tblDevoluciones tblDevoluciones { get; set; }
+
         public virtual tblProducto tblProducto { get; set; }
     }
 }

@@ -12,13 +12,13 @@
         {
         }
 
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<tblCargo> tblCargo { get; set; }
         public virtual DbSet<tblCategoria> tblCategoria { get; set; }
         public virtual DbSet<tblCliente> tblCliente { get; set; }
         public virtual DbSet<tblCompra> tblCompra { get; set; }
         public virtual DbSet<tblCxC> tblCxC { get; set; }
         public virtual DbSet<tblCxP> tblCxP { get; set; }
+        public virtual DbSet<tblDevoluciones> tblDevoluciones { get; set; }
         public virtual DbSet<tblEmpleado> tblEmpleado { get; set; }
         public virtual DbSet<tblKardex> tblKardex { get; set; }
         public virtual DbSet<tblMetodoPago> tblMetodoPago { get; set; }
@@ -73,9 +73,19 @@
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<tblCompra>()
+                .HasMany(e => e.tblDevoluciones)
+                .WithOptional(e => e.tblCompra)
+                .HasForeignKey(e => e.id_compra);
+
+            modelBuilder.Entity<tblCompra>()
                 .HasMany(e => e.tblCxP)
                 .WithOptional(e => e.tblCompra)
                 .HasForeignKey(e => e.id_compra);
+
+            modelBuilder.Entity<tblDevoluciones>()
+                .HasMany(e => e.tblKardex)
+                .WithOptional(e => e.tblDevoluciones)
+                .HasForeignKey(e => e.id_devolucion);
 
             modelBuilder.Entity<tblEmpleado>()
                 .Property(e => e.nombre)
@@ -179,6 +189,10 @@
                 .IsUnicode(false);
 
             modelBuilder.Entity<tblProveedor>()
+                .Property(e => e.cargo_contacto)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<tblProveedor>()
                 .Property(e => e.direccion)
                 .IsUnicode(false);
 
@@ -202,6 +216,11 @@
 
             modelBuilder.Entity<tblVenta>()
                 .HasMany(e => e.tblCxC)
+                .WithOptional(e => e.tblVenta)
+                .HasForeignKey(e => e.id_venta);
+
+            modelBuilder.Entity<tblVenta>()
+                .HasMany(e => e.tblDevoluciones)
                 .WithOptional(e => e.tblVenta)
                 .HasForeignKey(e => e.id_venta);
         }

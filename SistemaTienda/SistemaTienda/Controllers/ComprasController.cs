@@ -56,8 +56,17 @@ namespace SistemaTienda.Controllers
         {
             if (ModelState.IsValid)
             {
+                int? cantidad_actual = db.tblProducto.AsNoTracking().Where(p => p.Id == tblCompra.id_producto).SingleOrDefault().cantidad;
+                int? nueva_cantidad = cantidad_actual + tblCompra.cantidad_compra;
+
+                var producto = db.tblProducto.Find(tblCompra.id_producto);
+                producto.cantidad = nueva_cantidad;
+
                 db.tblCompra.Add(tblCompra);
                 db.SaveChanges();
+
+                new KardexController().AddCompraKardex(tblCompra);
+
                 return RedirectToAction("Index");
             }
 
@@ -96,6 +105,11 @@ namespace SistemaTienda.Controllers
         {
             if (ModelState.IsValid)
             {
+                int? cantidad_actual = db.tblCompra.AsNoTracking().SingleOrDefault().cantidad_compra;
+                int? nueva_cantidad = tblCompra.cantidad_compra;
+                int? diff = nueva_cantidad - cantidad_actual;
+                db.tblProducto.Find(tblCompra.id_producto).cantidad += diff;
+
                 db.Entry(tblCompra).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -128,6 +142,14 @@ namespace SistemaTienda.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             tblCompra tblCompra = db.tblCompra.Find(id);
+
+            int? cantidad_actual = db.tblProducto.Where(p => p.Id == tblCompra.id_producto).SingleOrDefault().cantidad;
+            int? nueva_cantidad = cantidad_actual - tblCompra.cantidad_compra;
+
+            var producto = db.tblProducto.Find(tblCompra.id_producto);
+            producto.cantidad = nueva_cantidad;
+
+            new KardexController().RemoveCompraKardex(tblCompra);
             db.tblCompra.Remove(tblCompra);
             db.SaveChanges();
             return RedirectToAction("Index");

@@ -13,6 +13,7 @@ namespace SistemaTienda.Models
         public tblVenta()
         {
             tblCxC = new HashSet<tblCxC>();
+            tblDevoluciones = new HashSet<tblDevoluciones>();
         }
 
         public int Id { get; set; }
@@ -36,6 +37,9 @@ namespace SistemaTienda.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblCxC> tblCxC { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblDevoluciones> tblDevoluciones { get; set; }
 
         public virtual tblEmpleado tblEmpleado { get; set; }
 

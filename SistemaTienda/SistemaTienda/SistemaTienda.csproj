@@ -211,6 +211,8 @@
     <Compile Include="Controllers\ComprasController.cs" />
     <Compile Include="Controllers\CxCController.cs" />
     <Compile Include="Controllers\CxPController.cs" />
+    <Compile Include="Controllers\DevolucionesComprasController.cs" />
+    <Compile Include="Controllers\DevolucionesVentasController.cs" />
     <Compile Include="Controllers\EmpleadosController.cs" />
     <Compile Include="Controllers\KardexController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -224,6 +226,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\crecer.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\KardexRow.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\sysdiagrams.cs" />
     <Compile Include="Models\tblCargo.cs" />
@@ -232,6 +235,7 @@
     <Compile Include="Models\tblCompra.cs" />
     <Compile Include="Models\tblCxC.cs" />
     <Compile Include="Models\tblCxP.cs" />
+    <Compile Include="Models\tblDevoluciones.cs" />
     <Compile Include="Models\tblEmpleado.cs" />
     <Compile Include="Models\tblKardex.cs" />
     <Compile Include="Models\tblMetodoPago.cs" />
@@ -410,6 +414,16 @@
     <Content Include="Views\CategoriasProductos\Details.cshtml" />
     <Content Include="Views\CategoriasProductos\Edit.cshtml" />
     <Content Include="Views\CategoriasProductos\Index.cshtml" />
+    <Content Include="Views\DevolucionesCompras\Create.cshtml" />
+    <Content Include="Views\DevolucionesCompras\Delete.cshtml" />
+    <Content Include="Views\DevolucionesCompras\Details.cshtml" />
+    <Content Include="Views\DevolucionesCompras\Edit.cshtml" />
+    <Content Include="Views\DevolucionesCompras\Index.cshtml" />
+    <Content Include="Views\DevolucionesVentas\Create.cshtml" />
+    <Content Include="Views\DevolucionesVentas\Delete.cshtml" />
+    <Content Include="Views\DevolucionesVentas\Details.cshtml" />
+    <Content Include="Views\DevolucionesVentas\Edit.cshtml" />
+    <Content Include="Views\DevolucionesVentas\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -4,48 +4,65 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.tblProducto.nombre_producto)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.id_compra)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.id_venta)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.fecha)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.tblProducto.nombre_producto)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.id_compra)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.id_venta)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.fecha)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
+<h2>Ingrese el rango de fechas</h2>
+@using (Html.BeginForm())
+{
+    <div class="mb-4 form-row">
+        <div class="col">
+            <select id="inicio" name="inicio" class="custom-select form-control" required>
+                <option selected disabled>Fecha inicial</option>
+                @foreach (var fecha in ViewBag.fechas)
+                {
+                    <option value="@fecha">@string.Format("{0:d}", fecha)</option>
+                }
+            </select>
+        </div>
+        <div class="col">
+            <select id="final" name="final" class="custom-select form-control" required>
+                <option selected disabled>Fecha final</option>
+                @foreach (var fecha in ViewBag.fechas)
+                {
+                    <option value="@fecha">@string.Format("{0:d}", fecha)</option>
+                }
+            </select>
+        </div>
+        <div class="col">
+            <select id="producto" name="producto" class="custom-select form-control" required>
+                <option selected disabled>Producto</option>
+                @{ 
+                    foreach (var item in ViewBag.productos)
+                    {
+                    <option value="@item.Id">@item.nombre_producto</option>
+                    }
+                 }
+            </select>
+        </div>
+        <div class="col">
+            <input type="submit" class="btn btn-primary" value="Generar Kardex" />
+        </div>
+    </div>
 }
 
+<table id="kardex_table" class="table table-bordered table-item-sales data">
+    <thead>
+        <tr>
+            <th rowspan="2">Fecha</th>
+            <th colspan="3" scope="colgroup">Entradas</th>
+            <th colspan="3" scope="colgroup">Salidas</th>
+            <th colspan="3" scope="colgroup">Saldo</th>
+        </tr>
+        <tr>
+            <th scope="col">Q</th>
+            <th scope="col">Costo Unitario</th>
+            <th scope="col">Costo Total</th>
+            <th scope="col">Q</th>
+            <th scope="col">Costo Unitario</th>
+            <th scope="col">Costo Total</th>
+            <th scope="col">Q</th>
+            <th scope="col">Costo Unitario</th>
+            <th scope="col">Costo Total</th>
+        </tr>
+        @Html.Raw(ViewBag.tbody)
+    </thead>
+    <tr></tr>
 </table>

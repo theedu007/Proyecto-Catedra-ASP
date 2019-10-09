@@ -1,0 +1,48 @@
+﻿@model SistemaTienda.Models.tblDevoluciones
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>tblDevoluciones</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.tblCompra.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblCompra.Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblVenta.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblVenta.Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cantidad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cantidad)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
