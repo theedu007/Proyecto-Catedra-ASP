@@ -105,10 +105,20 @@ namespace SistemaTienda.Controllers
         {
             if (ModelState.IsValid)
             {
-                int? cantidad_actual = db.tblCompra.AsNoTracking().SingleOrDefault().cantidad_compra;
-                int? nueva_cantidad = tblCompra.cantidad_compra;
-                int? diff = nueva_cantidad - cantidad_actual;
-                db.tblProducto.Find(tblCompra.id_producto).cantidad += diff;
+                var compra_actual = db.tblCompra.AsNoTracking().Where(c => c.Id == tblCompra.Id).SingleOrDefault();
+                var producto_actual = db.tblProducto.Find(compra_actual.id_producto);
+                producto_actual.cantidad -= compra_actual.cantidad_compra;
+
+                var producto_actualizar = db.tblProducto.Find(tblCompra.id_producto);
+                producto_actualizar.cantidad += tblCompra.cantidad_compra;
+
+
+
+                var kardex = db.tblKardex.Where(k => k.id_compra == tblCompra.Id).SingleOrDefault();
+                kardex.id_producto = tblCompra.id_producto;
+                kardex.fecha = tblCompra.fecha;
+                kardex.cantidad_inicial = db.tblProducto.Where(p => p.Id == tblCompra.id_producto).SingleOrDefault().cantidad - tblCompra.cantidad_compra;
+
 
                 db.Entry(tblCompra).State = EntityState.Modified;
                 db.SaveChanges();

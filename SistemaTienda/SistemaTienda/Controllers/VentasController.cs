@@ -107,11 +107,22 @@ namespace SistemaTienda.Controllers
         {
             if (ModelState.IsValid)
             {
-                int? actual_cantidad_venta = db.tblVenta.AsNoTracking().Where(p => p.Id == tblVenta.Id).SingleOrDefault().cantidad_venta;
-                int? nueva_cantidad_venta = tblVenta.cantidad_venta;
-                int? diff = nueva_cantidad_venta - actual_cantidad_venta;
-                var producto = db.tblProducto.Find(tblVenta.id_producto);
-                producto.cantidad = producto.cantidad - diff;
+                
+                var venta_actual = db.tblVenta.AsNoTracking().Where(c => c.Id == tblVenta.Id).SingleOrDefault();
+                var producto_actual = db.tblProducto.Find(venta_actual.id_producto);
+                producto_actual.cantidad += venta_actual.cantidad_venta;
+
+                var producto_actualizar = db.tblProducto.Find(tblVenta.id_producto);
+                producto_actualizar.cantidad -= tblVenta.cantidad_venta;
+
+
+
+                var kardex = db.tblKardex.Where(k => k.id_venta == tblVenta.Id).SingleOrDefault();
+                kardex.id_producto = tblVenta.id_producto;
+                kardex.fecha = tblVenta.fecha;
+                kardex.cantidad_inicial = db.tblProducto.Where(p => p.Id == tblVenta.id_producto).SingleOrDefault().cantidad + tblVenta.cantidad_venta;
+
+
 
                 db.Entry(tblVenta).State = EntityState.Modified;
                 db.SaveChanges();

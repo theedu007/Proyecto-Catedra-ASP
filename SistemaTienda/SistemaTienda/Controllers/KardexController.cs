@@ -143,9 +143,16 @@ namespace SistemaTienda.Controllers
 
         public void RemoveVentaKardex(tblVenta tblVenta)
         {
-            tblKardex tblKardex = db.tblKardex.Where(k => k.id_venta == tblVenta.Id).SingleOrDefault();
-            db.tblKardex.Remove(tblKardex);
-            db.SaveChanges();
+            try
+            {
+                tblKardex tblKardex = db.tblKardex.Where(k => k.id_venta == tblVenta.Id).SingleOrDefault();
+                db.tblKardex.Remove(tblKardex);
+                db.SaveChanges();
+            }
+            catch (System.ArgumentNullException)
+            {
+                Debug.WriteLine("No hay kardex asociado a esta venta");
+            }
         }
 
         public void AddCompraKardex(tblCompra tblCompra)
@@ -163,9 +170,16 @@ namespace SistemaTienda.Controllers
 
         public void RemoveCompraKardex(tblCompra tblCompra)
         {
-            tblKardex tblKardex = db.tblKardex.Where(k => k.id_compra == tblCompra.Id).SingleOrDefault();
-            db.tblKardex.Remove(tblKardex);
-            db.SaveChanges();
+            try
+            {
+                tblKardex tblKardex = db.tblKardex.Where(k => k.id_compra == tblCompra.Id).SingleOrDefault();
+                db.tblKardex.Remove(tblKardex);
+                db.SaveChanges();
+            }
+            catch (System.ArgumentNullException)
+            {
+                Debug.WriteLine("No hay kardex asociado a esta compra");
+            }
         }
 
         // GET: Kardex/Create

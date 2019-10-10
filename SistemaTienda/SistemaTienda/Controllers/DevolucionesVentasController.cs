@@ -53,6 +53,15 @@ namespace SistemaTienda.Controllers
         {
             if (ModelState.IsValid)
             {
+                var producto = db.tblProducto.Find(db.tblVenta.Find(tblDevoluciones.id_venta).id_producto);
+
+                int? cantidad_actual = producto.cantidad;
+                int? nueva_cantidad = cantidad_actual + tblDevoluciones.cantidad;
+
+                producto.cantidad = nueva_cantidad;
+
+
+
                 db.tblDevoluciones.Add(tblDevoluciones);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -89,6 +98,20 @@ namespace SistemaTienda.Controllers
         {
             if (ModelState.IsValid)
             {
+                var devolucion_actual = db.tblDevoluciones.AsNoTracking().Where(d => d.Id == tblDevoluciones.Id).SingleOrDefault();
+                var producto_actual = db.tblProducto.Find(db.tblVenta.Find(devolucion_actual.id_venta).id_producto);
+                producto_actual.cantidad -= devolucion_actual.cantidad;
+
+
+                var producto_actualizar = db.tblProducto.Find(db.tblVenta.Find(tblDevoluciones.id_venta).id_producto);
+                int? cantidad_actualizar = producto_actualizar.cantidad;
+                int? nueva_cantidad = cantidad_actualizar + tblDevoluciones.cantidad;
+                producto_actualizar.cantidad = nueva_cantidad;
+
+
+
+
+
                 db.Entry(tblDevoluciones).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -119,6 +142,11 @@ namespace SistemaTienda.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             tblDevoluciones tblDevoluciones = db.tblDevoluciones.Find(id);
+            var producto = db.tblProducto.Find(db.tblVenta.Find(tblDevoluciones.id_venta).id_producto);
+            producto.cantidad -= tblDevoluciones.cantidad;
+
+
+
             db.tblDevoluciones.Remove(tblDevoluciones);
             db.SaveChanges();
             return RedirectToAction("Index");
