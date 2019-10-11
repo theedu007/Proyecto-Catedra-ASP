@@ -4,41 +4,49 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+<h2>Modificar devolución</h2>
 
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
-    <div class="form-horizontal">
-        <h4>tblDevoluciones</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
+<div class="form-horizontal">
+    <h4>tblDevoluciones</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.id_venta, "id_venta", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("id_venta", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.id_venta, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.cantidad, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.cantidad, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.cantidad, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.id_venta, "id_venta", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.id_venta, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
+            @Html.ValidationMessageFor(model => model.id_venta, "", new { @class = "text-danger" })
         </div>
     </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.fecha, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.fecha, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+            @Html.ValidationMessageFor(model => model.fecha, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.cantidad, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.cantidad, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.cantidad, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+</div>
 }
 
 <div>

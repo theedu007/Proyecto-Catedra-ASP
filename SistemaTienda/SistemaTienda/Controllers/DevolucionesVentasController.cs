@@ -49,7 +49,7 @@ namespace SistemaTienda.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,id_compra,id_venta,cantidad")] tblDevoluciones tblDevoluciones)
+        public ActionResult Create([Bind(Include = "Id,id_compra,id_venta,cantidad,fecha")] tblDevoluciones tblDevoluciones)
         {
             if (ModelState.IsValid)
             {
@@ -64,6 +64,11 @@ namespace SistemaTienda.Controllers
 
                 db.tblDevoluciones.Add(tblDevoluciones);
                 db.SaveChanges();
+
+
+                new KardexController().AddDevolucionVenta(tblDevoluciones);
+
+
                 return RedirectToAction("Index");
             }
 
@@ -94,13 +99,14 @@ namespace SistemaTienda.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,id_compra,id_venta,cantidad")] tblDevoluciones tblDevoluciones)
+        public ActionResult Edit([Bind(Include = "Id,id_compra,id_venta,cantidad,fecha")] tblDevoluciones tblDevoluciones)
         {
             if (ModelState.IsValid)
             {
                 var devolucion_actual = db.tblDevoluciones.AsNoTracking().Where(d => d.Id == tblDevoluciones.Id).SingleOrDefault();
                 var producto_actual = db.tblProducto.Find(db.tblVenta.Find(devolucion_actual.id_venta).id_producto);
                 producto_actual.cantidad -= devolucion_actual.cantidad;
+
 
 
                 var producto_actualizar = db.tblProducto.Find(db.tblVenta.Find(tblDevoluciones.id_venta).id_producto);
@@ -110,10 +116,16 @@ namespace SistemaTienda.Controllers
 
 
 
-
-
                 db.Entry(tblDevoluciones).State = EntityState.Modified;
+
+                var kardex = db.tblKardex.Where(k => k.id_devolucion == tblDevoluciones.Id).SingleOrDefault();
+                var producto_id = db.tblVenta.Find(tblDevoluciones.id_venta).id_producto;
+                kardex.id_producto = producto_id;
+                kardex.fecha = tblDevoluciones.fecha;
+
+
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
             ViewBag.id_compra = new SelectList(db.tblCompra, "Id", "Id", tblDevoluciones.id_compra);
@@ -145,7 +157,8 @@ namespace SistemaTienda.Controllers
             var producto = db.tblProducto.Find(db.tblVenta.Find(tblDevoluciones.id_venta).id_producto);
             producto.cantidad -= tblDevoluciones.cantidad;
 
-
+            var kardex = db.tblKardex.Where(k => k.tblDevoluciones.Id == id).SingleOrDefault();
+            db.tblKardex.Remove(kardex);
 
             db.tblDevoluciones.Remove(tblDevoluciones);
             db.SaveChanges();

@@ -15,6 +15,7 @@ namespace SistemaTienda.Controllers
     public class KardexController : Controller
     {
         private crecer db = new crecer();
+        private List<KardexRow> kardexRows;
 
         [HttpGet]
         public ActionResult Index()
@@ -34,7 +35,7 @@ namespace SistemaTienda.Controllers
             var filteredData = db.tblKardex.Where(p=>p.tblProducto.Id == producto).Where(t => t.fecha >= fecha_inicio && t.fecha <= fecha_final);
             if (filteredData.Any())
             {
-                List<KardexRow> kardexRows = new List<KardexRow>();
+                kardexRows = new List<KardexRow>();
                 KardexRow inventario_inicial = new KardexRow();
                 inventario_inicial.fecha = filteredData.FirstOrDefault().fecha;
                 inventario_inicial.saldo_Q = filteredData.FirstOrDefault().cantidad_inicial;
@@ -91,6 +92,8 @@ namespace SistemaTienda.Controllers
             if(actual_kardex.id_compra != null)
             {
                 tblCompra compra = db.tblCompra.Where(c => c.Id == actual_kardex.id_compra).SingleOrDefault();
+                kr.id_compra = compra.Id;
+
                 kr.entrada_Q = compra.cantidad_compra;
                 kr.entrada_cu = (compra.precio_compra / compra.cantidad_compra);
                 kr.entrada_ct = compra.precio_compra;
@@ -102,6 +105,8 @@ namespace SistemaTienda.Controllers
             else if(actual_kardex.id_venta != null)
             {
                 tblVenta venta = db.tblVenta.Where(v => v.Id == actual_kardex.id_venta).SingleOrDefault();
+                kr.id_venta = venta.Id;
+
                 kr.salida_Q = venta.cantidad_venta;
                 kr.salida_cu = previous_kardex.saldo_cu;
                 kr.salida_ct = kr.salida_Q * kr.salida_cu;
@@ -109,6 +114,34 @@ namespace SistemaTienda.Controllers
                 kr.saldo_Q = previous_kardex.saldo_Q - venta.cantidad_venta;
                 kr.saldo_cu = previous_kardex.saldo_cu;
                 kr.saldo_ct = kr.saldo_Q * kr.saldo_cu;
+            }
+            else if (actual_kardex.id_devolucion != null)
+            {
+                var devolucion = db.tblDevoluciones.Where(v => v.Id == actual_kardex.id_devolucion).SingleOrDefault();
+                if(devolucion.id_venta != null)
+                {
+                    var venta = kardexRows.Where(k => k.id_venta == devolucion.id_venta).SingleOrDefault();
+
+                    kr.salida_Q = devolucion.cantidad * -1;
+                    kr.salida_cu = venta.salida_cu;
+                    kr.salida_ct = kr.salida_Q * kr.salida_cu;
+
+                    kr.saldo_Q = previous_kardex.saldo_Q - kr.salida_Q;
+                    kr.saldo_cu = previous_kardex.saldo_cu;
+                    kr.saldo_ct = kr.saldo_Q * kr.saldo_cu;
+                }
+                else if(devolucion.id_compra != null)
+                {
+                    var compra = kardexRows.Where(k => k.id_compra == devolucion.id_compra).SingleOrDefault();
+
+                    kr.entrada_Q = devolucion.cantidad * -1;
+                    kr.entrada_cu = compra.entrada_cu;
+                    kr.entrada_ct = kr.entrada_Q * kr.entrada_cu;
+
+                    kr.saldo_Q = previous_kardex.saldo_Q + kr.entrada_Q;
+                    kr.saldo_cu = (previous_kardex.saldo_ct + kr.entrada_ct) / kr.saldo_Q;
+                    kr.saldo_ct = kr.saldo_Q * kr.saldo_cu;
+                }
             }
             return kr;
         }
@@ -155,6 +188,23 @@ namespace SistemaTienda.Controllers
             }
         }
 
+        public void AddDevolucionVenta(tblDevoluciones devolucion)
+        {
+            var producto = db.tblProducto.Find(db.tblVenta.Find(devolucion.id_venta).id_producto);
+
+            db.tblKardex.Add(new tblKardex
+            {
+                id_producto = producto.Id,
+                id_compra = null,
+                id_venta = null,
+                id_devolucion = devolucion.Id,
+                fecha = devolucion.fecha,
+                cantidad_inicial = producto.cantidad - devolucion.cantidad
+            });
+            db.SaveChanges();
+        }
+
+
         public void AddCompraKardex(tblCompra tblCompra)
         {
             db.tblKardex.Add(new tblKardex
@@ -180,6 +230,22 @@ namespace SistemaTienda.Controllers
             {
                 Debug.WriteLine("No hay kardex asociado a esta compra");
             }
+        }
+
+        public void AddDevolucionCompra(tblDevoluciones devolucion)
+        {
+            var producto = db.tblProducto.Find(db.tblCompra.Find(devolucion.id_compra).id_producto);
+
+            db.tblKardex.Add(new tblKardex
+            {
+                id_producto = producto.Id,
+                id_compra = null,
+                id_venta = null,
+                id_devolucion = devolucion.Id,
+                fecha = devolucion.fecha,
+                cantidad_inicial = producto.cantidad + devolucion.cantidad
+            });
+            db.SaveChanges();
         }
 
         // GET: Kardex/Create

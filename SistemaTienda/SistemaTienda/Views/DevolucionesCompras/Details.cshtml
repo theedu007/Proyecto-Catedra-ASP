@@ -4,7 +4,7 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2>Detalle de devolución</h2>
 
 <div>
     <h4>tblDevoluciones</h4>
@@ -16,6 +16,14 @@
 
         <dd>
             @Html.DisplayFor(model => model.tblCompra.Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fecha)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fecha)
         </dd>
 
         <dt>

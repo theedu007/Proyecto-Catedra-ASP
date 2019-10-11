@@ -9,22 +9,10 @@
 {
     <div class="mb-4 form-row">
         <div class="col">
-            <select id="inicio" name="inicio" class="custom-select form-control" required>
-                <option selected disabled>Fecha inicial</option>
-                @foreach (var fecha in ViewBag.fechas)
-                {
-                    <option value="@fecha">@string.Format("{0:d}", fecha)</option>
-                }
-            </select>
+            <input name="inicio" id="inicio" type="date" class="form-control" />
         </div>
         <div class="col">
-            <select id="final" name="final" class="custom-select form-control" required>
-                <option selected disabled>Fecha final</option>
-                @foreach (var fecha in ViewBag.fechas)
-                {
-                    <option value="@fecha">@string.Format("{0:d}", fecha)</option>
-                }
-            </select>
+            <input name="final" id="final" type="date" class="form-control" />
         </div>
         <div class="col">
             <select id="producto" name="producto" class="custom-select form-control" required>
@@ -47,9 +35,9 @@
     <thead>
         <tr>
             <th rowspan="2">Fecha</th>
-            <th colspan="3" scope="colgroup">Entradas</th>
-            <th colspan="3" scope="colgroup">Salidas</th>
-            <th colspan="3" scope="colgroup">Saldo</th>
+            <th colspan="3" scope="colgroup" bgcolor="#7de3fa">Entradas</th>
+            <th colspan="3" scope="colgroup" bgcolor="#f2b063">Salidas</th>
+            <th colspan="3" scope="colgroup" bgcolor="#f0f27c">Saldo</th>
         </tr>
         <tr>
             <th scope="col">Q</th>

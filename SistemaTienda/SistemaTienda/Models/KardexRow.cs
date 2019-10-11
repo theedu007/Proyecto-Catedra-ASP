@@ -9,6 +9,9 @@ namespace SistemaTienda.Models
     {
         public DateTime? fecha { get; set; }
 
+        public int? id_compra { get; set; }
+        public int? id_venta { get; set; }
+
         public int? entrada_Q { get; set; }
         public Decimal? entrada_cu { get; set; }
         public Decimal? entrada_ct { get; set; }
