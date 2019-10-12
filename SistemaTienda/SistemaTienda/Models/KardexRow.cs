@@ -9,6 +9,8 @@ namespace SistemaTienda.Models
     {
         public DateTime? fecha { get; set; }
 
+        public String descripcion { get; set; }
+
         public int? id_compra { get; set; }
         public int? id_venta { get; set; }
 

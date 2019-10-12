@@ -38,6 +38,7 @@ namespace SistemaTienda.Controllers
                 kardexRows = new List<KardexRow>();
                 KardexRow inventario_inicial = new KardexRow();
                 inventario_inicial.fecha = filteredData.FirstOrDefault().fecha;
+                inventario_inicial.descripcion = "Inventario inicial";
                 inventario_inicial.saldo_Q = filteredData.FirstOrDefault().cantidad_inicial;
                 inventario_inicial.saldo_cu = filteredData.FirstOrDefault().tblProducto.precio;
                 inventario_inicial.saldo_ct = filteredData.FirstOrDefault().tblProducto.precio * filteredData.FirstOrDefault().cantidad_inicial;
@@ -54,6 +55,7 @@ namespace SistemaTienda.Controllers
                 {
                     ViewBag.tbody += "<tr>";
                     ViewBag.tbody += "<td>"+trans.fecha.Value.ToShortDateString()+"</td>";
+                    ViewBag.tbody += "<td>" + trans.descripcion + "</td>";
                     ViewBag.tbody += "<td>"+trans.entrada_Q+"</td>";
                     ViewBag.tbody += "<td>"+ string.Format("{0:0.00}", trans.entrada_cu).Replace(".00", "")+ "</td>";
                     ViewBag.tbody += "<td>"+ string.Format("{0:0.00}", trans.entrada_ct).Replace(".00", "") + "</td>";
@@ -64,6 +66,12 @@ namespace SistemaTienda.Controllers
                     ViewBag.tbody += "<td>"+ string.Format("{0:0.00}", trans.saldo_cu).Replace(".00", "") + "</td>";
                     ViewBag.tbody += "<td>"+ string.Format("{0:0.00}", trans.saldo_ct).Replace(".00", "") + "</td>";
                     ViewBag.tbody += "</tr>";
+
+                    if (trans.Equals(kardexRows.Last()))
+                    {
+                        ViewBag.Saldo = trans.saldo_Q;
+                        ViewBag.Total = string.Format("{0:0.00}", trans.saldo_ct).Replace(".00", "");
+                    }
                 }
             }
 
@@ -101,6 +109,8 @@ namespace SistemaTienda.Controllers
                 kr.saldo_Q = previous_kardex.saldo_Q + compra.cantidad_compra;
                 kr.saldo_cu = (previous_kardex.saldo_ct + compra.precio_compra) / kr.saldo_Q; //Formula de Promedio ponderado
                 kr.saldo_ct = kr.saldo_Q * kr.saldo_cu;
+
+                kr.descripcion = "Compra de productos factura #" + kr.id_compra;
             }
             else if(actual_kardex.id_venta != null)
             {
@@ -114,6 +124,8 @@ namespace SistemaTienda.Controllers
                 kr.saldo_Q = previous_kardex.saldo_Q - venta.cantidad_venta;
                 kr.saldo_cu = previous_kardex.saldo_cu;
                 kr.saldo_ct = kr.saldo_Q * kr.saldo_cu;
+
+                kr.descripcion = "Venta de productos factura #" + kr.id_venta;
             }
             else if (actual_kardex.id_devolucion != null)
             {
@@ -129,6 +141,8 @@ namespace SistemaTienda.Controllers
                     kr.saldo_Q = previous_kardex.saldo_Q - kr.salida_Q;
                     kr.saldo_cu = previous_kardex.saldo_cu;
                     kr.saldo_ct = kr.saldo_Q * kr.saldo_cu;
+
+                    kr.descripcion = "Devolución de venta factura #" + devolucion.id_venta;
                 }
                 else if(devolucion.id_compra != null)
                 {
@@ -141,6 +155,8 @@ namespace SistemaTienda.Controllers
                     kr.saldo_Q = previous_kardex.saldo_Q + kr.entrada_Q;
                     kr.saldo_cu = (previous_kardex.saldo_ct + kr.entrada_ct) / kr.saldo_Q;
                     kr.saldo_ct = kr.saldo_Q * kr.saldo_cu;
+
+                    kr.descripcion = "Devolución de compra factura #" + devolucion.id_compra;
                 }
             }
             return kr;

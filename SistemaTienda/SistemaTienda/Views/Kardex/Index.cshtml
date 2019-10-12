@@ -4,6 +4,10 @@
     ViewBag.Title = "Index";
 }
 
+@section Styles{
+    <link href="~/Content/Kardex.css" rel="stylesheet" />
+}
+
 <h2>Ingrese el rango de fechas</h2>
 @using (Html.BeginForm())
 {
@@ -17,12 +21,12 @@
         <div class="col">
             <select id="producto" name="producto" class="custom-select form-control" required>
                 <option selected disabled>Producto</option>
-                @{ 
+                @{
                     foreach (var item in ViewBag.productos)
                     {
-                    <option value="@item.Id">@item.nombre_producto</option>
+                        <option value="@item.Id">@item.nombre_producto</option>
                     }
-                 }
+                }
             </select>
         </div>
         <div class="col">
@@ -35,6 +39,7 @@
     <thead>
         <tr>
             <th rowspan="2">Fecha</th>
+            <th width="100%" rowspan="2">Descripción</th>
             <th colspan="3" scope="colgroup" bgcolor="#7de3fa">Entradas</th>
             <th colspan="3" scope="colgroup" bgcolor="#f2b063">Salidas</th>
             <th colspan="3" scope="colgroup" bgcolor="#f0f27c">Saldo</th>
@@ -52,5 +57,17 @@
         </tr>
         @Html.Raw(ViewBag.tbody)
     </thead>
-    <tr></tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="font-weight-bold bg-grey">Saldo</td>
+        <td>@ViewBag.Saldo</td>
+        <td class="font-weight-bold bg-grey">Total</td>
+        <td>@ViewBag.Total</td>
+    </tr>
 </table>
