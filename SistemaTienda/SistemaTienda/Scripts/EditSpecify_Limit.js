@@ -26,7 +26,7 @@ function setLimitVenta(firstCall) {
                 $("#cantidad_venta").attr({
                     "min": 1,
                     "max": Number(data.cantidad)
-            });
+                });
 
             if (!firstCall)
                 resetFields(false);

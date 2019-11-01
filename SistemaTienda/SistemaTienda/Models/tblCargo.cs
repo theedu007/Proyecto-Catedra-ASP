@@ -15,8 +15,10 @@ namespace SistemaTienda.Models
             tblEmpleado = new HashSet<tblEmpleado>();
         }
 
+        [Display(Name = "Cargo")]
         public int Id { get; set; }
 
+        [Display(Name = "Nombre")]
         [StringLength(64)]
         public string nombre { get; set; }
 

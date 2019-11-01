@@ -16,6 +16,7 @@ namespace SistemaTienda.Models
             tblDevoluciones = new HashSet<tblDevoluciones>();
         }
 
+        [Display(Name = "Venta")]
         public int Id { get; set; }
 
         public int id_cliente { get; set; }

@@ -16,6 +16,7 @@ namespace SistemaTienda.Models
             tblCxP = new HashSet<tblCxP>();
         }
 
+        [Display(Name = "Compra")]
         public int Id { get; set; }
 
         public int id_proveedor { get; set; }

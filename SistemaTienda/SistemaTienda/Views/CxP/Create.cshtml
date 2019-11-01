@@ -26,22 +26,22 @@
         <div class="form-group">
             @Html.LabelFor(model => model.fecha_limite, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.fecha_limite, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownListFor(model => model.fecha_limite, Enumerable.Empty<SelectListItem>(), htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.fecha_limite, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.abonado, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.abono_inicial, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.abonado, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.abonado, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.abono_inicial, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.abono_inicial, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input id="submit_button" type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
     </div>
@@ -53,4 +53,5 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/Cuentas.js"></script>
 }

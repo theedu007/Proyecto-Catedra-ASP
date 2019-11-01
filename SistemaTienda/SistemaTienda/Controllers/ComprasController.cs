@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -52,7 +53,7 @@ namespace SistemaTienda.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,id_proveedor,id_empleado,id_producto,id_metodopago,fecha,cantidad_compra,precio_compra")] tblCompra tblCompra)
+        public ActionResult Create([Bind(Include = "Id,id_proveedor,id_empleado,id_producto,id_metodopago,fecha,cantidad_compra,precio_compra")] tblCompra tblCompra, DateTime? fecha_limite)
         {
             if (ModelState.IsValid)
             {
@@ -66,6 +67,7 @@ namespace SistemaTienda.Controllers
                 db.SaveChanges();
 
                 new KardexController().AddCompraKardex(tblCompra);
+
 
                 return RedirectToAction("Index");
             }

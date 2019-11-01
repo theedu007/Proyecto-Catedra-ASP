@@ -25,6 +25,8 @@
         public virtual DbSet<tblProducto> tblProducto { get; set; }
         public virtual DbSet<tblProveedor> tblProveedor { get; set; }
         public virtual DbSet<tblVenta> tblVenta { get; set; }
+        public virtual DbSet<tblPagos> tblPagos { get; set; }
+        public virtual DbSet<tblCobros> tblCobros { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

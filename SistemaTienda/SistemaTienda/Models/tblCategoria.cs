@@ -15,8 +15,10 @@ namespace SistemaTienda.Models
             tblProducto = new HashSet<tblProducto>();
         }
 
+        [Display(Name = "Categoria")]
         public int Id { get; set; }
 
+        [Display(Name = "Nombre Categoria")]
         [StringLength(64)]
         public string nombre_categoria { get; set; }
 

@@ -9,6 +9,12 @@ namespace SistemaTienda.Models
     [Table("tblCxC")]
     public partial class tblCxC
     {
+        public tblCxC()
+        {
+            tblCobros = new HashSet<tblCobros>();
+        }
+
+        [Display(Name = "CxC")]
         public int Id { get; set; }
 
         public int? id_venta { get; set; }
@@ -16,8 +22,14 @@ namespace SistemaTienda.Models
         [Column(TypeName = "date")]
         public DateTime? fecha_limite { get; set; }
 
+        public decimal? abono_inicial { get; set; }
+
         public decimal? abonado { get; set; }
 
+        public String estado { get; set; }
+
         public virtual tblVenta tblVenta { get; set; }
+
+        public ICollection<tblCobros> tblCobros { get; set; }
     }
 }
